@@ -36,11 +36,18 @@
                 <div class="w-full h-2/3 bg-slate-600 rounded-xl bg-opacity-30 p-4">
                     <div class="w-full h-1/6 text-md m-4">
                         <h2 class="text-4xl">最新紀錄</h2>
-                        <p>共 {{ criticals + warns }} 筆資料, 最後更新於: YYYY/MM/DD HH:MM:SS</p>
+                        <p>共 {{ events }} 筆資料, 最後更新於: YYYY/MM/DD HH:MM:SS</p>
                     </div>
                     
                     <div class="w-full h-5/6   border-red-600">
-
+                        <div class="w-full h-5/6 overflow-y-auto">
+                            <div v-for="item in res" :key="item.timestamp" class="w-full h-1/6 flex flex-row justify-between items-center bg-opacity-25 border-b-2 border-slate-500" :class="item.color">
+                                <div class="w-1/6">{{ item.timestamp }}</div>
+                                <div class="w-1/6">{{ item.cameraId }}</div>
+                                <div class="w-1/6">{{ item.violationType }}</div>
+                                <div class="w-1/6">{{ item.level }}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -52,12 +59,71 @@
 <script setup>
 
     const msg = ref('')
+    const events = ref(0)
     const criticals = ref(0)
     const warns = ref(0)
 
     // followings value will automatically set
+    //const event_num = ref('0')
     const criticals_num = ref('0')
     const warns_num = ref('0')
+
+    // mock data
+    /*
+        level: 0 - normal, 1 - warning, 2 - critical
+    */
+    const res = ref([
+        {
+            "timestamp": "2024-08-08T07:34:17.320Z",
+            "cameraId": "01機房左側",
+            "violationType": "進食",
+            "ruleId": "201"
+        },
+        {
+            "timestamp": "2024-08-09T07:34:17.320Z",
+            "cameraId": "01機房左側",
+            "violationType": "私人設備拍攝行為",
+            "ruleId": "202"
+        },{
+            "timestamp": "2024-08-10T07:34:17.320Z",
+            "cameraId": "01機房左側",
+            "violationType": "機櫃門開啟",
+            "ruleId": "101"
+        },{
+            "timestamp": "2024-08-10T07:34:17.320Z",
+            "cameraId": "01機房左側",
+            "violationType": "人員進入機房",
+            "ruleId": "001"
+        }
+    ])
+
+    res.value.forEach((item) => {
+        if(item.ruleId > 200){
+            criticals.value++
+        }else if(item.ruleId > 100){
+            warns.value++
+        }
+        events.value++
+
+        //parse timestamp
+        item.timestamp = new Date(item.timestamp).toLocaleString()
+
+        //color
+        if(item.ruleId > 200){
+            item.color = 'bg-red-500'
+            item.level = '嚴重'
+        }
+        else if(item.ruleId > 100){
+            item.color = 'bg-yellow-500'
+            item.level = '警告'
+        }
+        else{
+            item.color = 'bg-gray-500'
+            item.level = '一般'
+        }
+
+    })
+
 
     if(criticals.value>0 || warns.value>0) {
         if(criticals.value){
@@ -68,6 +134,7 @@
                 criticals_num.value = '99+'
         }
         if(warns.value){
+            warns_num.value = warns.value
             msg.value += '目前有 ' + warns.value + ' 筆警告紀錄,'
             // avoid of overflow
             if(warns.value > 99)
