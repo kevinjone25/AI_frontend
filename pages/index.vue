@@ -10,20 +10,20 @@
                 </div>
 
                 <div class="flex flex-row">
-                    <nuxt-link to="/violations?list=criticals">
+                    <nuxt-link to="/statistics?list=criticals">
                         <div class="w-44 h-44 flex flex-col justify-between bg-red-500 bg-opacity-50 rounded-xl m-1 p-4 hover:translate-x-0.5 hover:bg-red-800 duration-300">
                         <h2 class="font-bold text-3xl text-red-50">嚴重</h2>
                         <p class="self-end font-black text-7xl text-red-300">{{ criticals_num }}</p>
                         </div>
                     </nuxt-link>
                     
-                    <nuxt-link to="/violations?list=warns">
+                    <nuxt-link to="/statistics?list=warns">
                         <div class="w-44 h-44 flex flex-col justify-between bg-yellow-600 bg-opacity-60 rounded-xl m-1 p-4 hover:translate-x-0.5 hover:bg-yellow-700 duration-300">
                             <h2 class="font-bold text-3xl text-yellow-50">警告</h2>
                             <p class="self-end font-black text-7xl text-yellow-400">{{ warns_num }}</p>
                         </div>
                     </nuxt-link>
-                    <nuxt-link to="/violations">
+                    <nuxt-link to="/statistics">
                         <div class="w-44 h-44 flex flex-col justify-between bg-gray-600 bg-opacity-60 rounded-xl m-1 p-4 hover:translate-x-0.5 hover:bg-gray-700 duration-300">
                             <h2 class="font-bold text-3xl text-gray-50">所有紀錄</h2>
                             <p class="self-end font-black text-4xl">logs</p>

@@ -1,0 +1,73 @@
+
+
+.dots {
+    list-style: none;
+    display: flex;
+    color: #0284c7 ;
+    animation-name: colorChange;
+    animation: colorChange 5s infinite alternate;
+}
+
+.dots div {
+    /* height: 15p;
+    width: 15px;
+    border-radius: 50%; */
+    margin: 0 2px;
+    animation-name: changeColor;
+    animation: bounce 1.6s infinite alternate;
+}
+
+@keyframes colorChange {
+    0%   { color: #059669; }  
+    33%  { color: #0284c7; }    
+    66%  { color: #3357FF; } 
+    100% { color: #059669; } 
+}
+
+@keyframes bounce {
+    to {
+        opacity: .4;
+        transform: translateY(20px);
+    }
+}
+
+.dots div:nth-child(2) {
+    animation-delay: 150ms;
+}
+
+.dots div:nth-child(3) {
+    animation-delay: 300ms;
+}
+
+.dots div:nth-child(4) {
+    animation-delay: 450ms;
+}
+
+.dots div:nth-child(5) {
+    animation-delay: 600ms;
+}
+
+.dots div:nth-child(6) {
+    animation-delay: 750ms;
+}
+
+.dots div:nth-child(7) {
+    animation-delay: 900ms;
+}
+
+.dots div:nth-child(8) {
+    animation-delay: 1050ms;
+}
+
+.dots div:nth-child(9) {
+    animation-delay: 1200ms;
+}
+
+.dots div:nth-child(10) {
+    animation-delay: 1350ms;
+}
+
+
+
+
+
