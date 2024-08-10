@@ -2,23 +2,23 @@
     <div class="w-screen h-screen bg-black flex justify-center items-center">
         <div class="w-full max-w-6xl h-full flex flex-col text-white">
             <div class="w-full mt-40 mb-20">
-                <h1 class="text-6xl m-1">Dashboard</h1>
+                <h1 class="text-6xl m-1">狀態總覽</h1>
                 <p class="text-2xl m-1">
-                    目前有 10 筆嚴重等級違規, 10 筆警告等級違規, 請查看！
+                    {{ msg }}
                 </p>
             </div>
             <div class="flex flex-row">
                 <nuxt-link to="/violations?list=criticals">
-                    <div class="w-44 h-44 flex flex-col justify-between bg-red-500 bg-opacity-50 rounded-xl m-1 p-4 hover:translate-x-0.5 hover:bg-red-700 duration-300">
+                    <div class="w-44 h-44 flex flex-col justify-between bg-red-500 bg-opacity-50 rounded-xl m-1 p-4 hover:translate-x-0.5 hover:bg-red-800 duration-300">
                     <h2 class="font-bold text-3xl text-red-50">嚴重</h2>
-                    <p class="self-end font-black text-7xl text-red-300">10</p>
+                    <p class="self-end font-black text-7xl text-red-300">{{ criticals_num }}</p>
                 </div>
                 </nuxt-link>
                 
                 <nuxt-link to="/violations?list=warns">
                     <div class="w-44 h-44 flex flex-col justify-between bg-yellow-600 bg-opacity-60 rounded-xl m-1 p-4 hover:translate-x-0.5 hover:bg-yellow-700 duration-300">
                         <h2 class="font-bold text-3xl text-yellow-50">警告</h2>
-                        <p class="self-end font-black text-7xl text-yellow-400">10</p>
+                        <p class="self-end font-black text-7xl text-yellow-400">{{ warns_num }}</p>
                     </div>
                 </nuxt-link>
                 <nuxt-link to="/violations">
@@ -27,8 +27,41 @@
                         <p class="self-end font-black text-4xl">logs</p>
                     </div>
                 </nuxt-link>
-                
             </div>
         </div>
     </div>
 </template>
+
+<script setup>
+
+    const msg = ref('')
+    const criticals = ref(0)
+    const warns = ref(0)
+
+    // followings value will automatically set
+    const criticals_num = ref('0')
+    const warns_num = ref('0')
+
+    if(criticals.value>0 || warns.value>0) {
+        if(criticals.value){
+            criticals_num.value = criticals.value
+            msg.value = '目前有 ' + criticals.value + ' 筆嚴重違規紀錄,'
+            // avoid of overflow
+            if(criticals.value > 99)
+                criticals_num.value = '99+'
+        }
+        if(warns.value){
+            msg.value += '目前有 ' + warns.value + ' 筆警告紀錄,'
+            if(warns.value > 99)
+                warns_num.value = '99+'
+        }
+        msg.value += '請查看!'
+    }else if(criticals.value==0 && warns.value==0){
+        msg.value = '目前沒有新的違規紀錄！'
+    }else{
+        msg.value = '錯誤！'
+        criticals_num.value = 'Error'
+        warns_num.value = 'Error'
+    }
+
+</script>
