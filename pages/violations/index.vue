@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-[calc(100vh-24px)] bg-black">
+    <div class="w-full h-screen bg-gradient-to-tr from-gray-950  from-30% via-blue-950 via-95% to-sky-950 to-100%">
         <div class="flex justify-center items-center h-full" v-show="state">
             <div class="col w-1/2 text-center">
                 <h1 class="text-white text-4xl row font-semibold">
