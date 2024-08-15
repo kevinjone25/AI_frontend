@@ -10,6 +10,9 @@
             <div class="col">
                 <nuxt-link to="/statistics" class="">Statistics</nuxt-link>
             </div>
+            <div class="col">
+                <nuxt-link to="/report" class="">Report</nuxt-link>
+            </div>
         </div>
     </div>
 </template>
