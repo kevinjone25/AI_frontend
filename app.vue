@@ -2,7 +2,7 @@
   <div>
     <Navbar />
     <NuxtPage />
-      <Info />
+    <ScrollToTop />
   </div>
 </template>
 
