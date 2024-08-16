@@ -2,16 +2,16 @@
     <div class="flex text-white h-16 min-w-full fixed bg-neutral-900 bg-opacity-10 border-gray-800 border-b justify-center items-center backdrop-blur-lg z-50">
         <div class="flex w-3/4 px-1 justify-end gap-5 font-sans font-semibold">
             <div class="col">
-                <nuxt-link to="/" class="">Dashboard</nuxt-link>
+                <nuxt-link to="/" class="">主控板</nuxt-link>
             </div>
             <div class="col">
-                <nuxt-link to="/violations" class="">Violations</nuxt-link>
+                <nuxt-link to="/violations" class="">紀錄</nuxt-link>
             </div>
             <div class="col">
-                <nuxt-link to="/statistics" class="">Statistics</nuxt-link>
+                <nuxt-link to="/statistics" class="">報表</nuxt-link>
             </div>
             <div class="col">
-                <nuxt-link to="/report" class="">Report</nuxt-link>
+                <nuxt-link to="/report" class="">歷史報告</nuxt-link>
             </div>
         </div>
     </div>
