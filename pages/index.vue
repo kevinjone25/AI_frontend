@@ -1,6 +1,6 @@
 <template>
-    <div class="w-screen h-screen flex justify-center items-center bg-black ">
-        <main class="w-full max-w-6xl flex flex-wrap justify-center items-center px-10 lg:px-20 xl:px-40  border-yellow-600">
+    <div class="w-screen h-screen flex justify-center items-center bg-gradient-to-tr from-gray-950  from-30% via-blue-950 via-95% to-sky-950 to-100%">
+        <main class="w-full flex flex-wrap justify-center items-center px-10 lg:px-20 xl:px-40  border-yellow-600">
             <div class="left h-full md:h-2/3 lg:w-1/2 w-full flex flex-col text-white justify-between   border-blue-600">
                 <div class="w-full mt-40 mb-20">
                     <h1 class="text-6xl m-1">系統總覽</h1>
@@ -32,16 +32,16 @@
                 </div>
             </div>
 
-            <div class="right h-full md:h-2/3 lg:w-1/2 w-full flex items-center text-slate-400   ">
-                <div class="w-full h-2/3 bg-slate-600 rounded-xl bg-opacity-30 p-4">
+            <div class="right h-full md:h-2/3 lg:w-1/2 w-full flex items-center text-slate-300   ">
+                <div class="w-full h-2/3 bg-slate-600 rounded-xl bg-opacity-50 p-4">
                     <div class="w-full h-1/6 text-md m-4">
                         <h2 class="text-4xl">最新紀錄</h2>
                         <p>共 {{ events }} 筆資料, 最後更新於: YYYY/MM/DD HH:MM:SS</p>
                     </div>
                     
-                    <div class="w-full h-5/6   border-red-600">
+                    <div class="w-full h-5/6">
                         <div class="w-full h-5/6 overflow-y-auto">
-                            <div v-for="item in res" :key="item.timestamp" class="w-full h-1/6 p-2 flex flex-row justify-between items-center bg-opacity-25 border-b-2 border-slate-500 rounded-md duration-150 hover:text-white" :class="item.color">
+                            <div v-for="item in res" :key="item.timestamp" class="w-full h-1/6 p-2 flex flex-row justify-between items-center bg-opacity-25 border-b-2 border-slate-500 rounded-md duration-150 hover:text-white hover:translate-x-2" :class="item.color">
                                 <div class="w-1/6">{{ item.timestamp }}</div>
                                 <div class="w-1/6">{{ item.cameraId }}</div>
                                 <div class="w-1/3">{{ item.violationType }}</div>
