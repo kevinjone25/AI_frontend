@@ -22,8 +22,6 @@ onMounted(() => {
         } else {
             scrollButton.classList.remove('visible')
         }
-        console.log(scrollButton)
-        console.log(window.scrollY)
     })
 })
 </script>
