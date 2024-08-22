@@ -95,6 +95,13 @@
     
     // request function
     async function fetchData(){
+        // reset value
+        loading.value = true
+        res.value = []
+        events.value = 0
+        criticals.value = 0
+        warns.value = 0
+
         // send request, set CORS header
         try{
             const response = await fetch(reqUrl)
@@ -162,9 +169,13 @@
             behavior: 'smooth'
         })
     }
-
+    
     //fetch when onMounted
-    onMounted(async() => {
+    onMounted(async () => {
+        //reset value
+        criticals_num.value = '0'
+        warns_num.value = '0'
+        events_num.value = '0'
         await fetchData()
     })
 
