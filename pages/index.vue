@@ -20,26 +20,26 @@
                         <p class="mt-1 text-gray-800 dark:text-neutral-400">
                             {{ errorModalMsg }}
         </p>
-      </div>
-      <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
+    </div>
+    <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
         <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" data-hs-overlay="#hs-scale-animation-modal">
-          關閉
+            關閉
         </button>
-      </div>
+    </div>
     </div>
   </div>
 </div>
 
         <client-only>
             <main class="w-full flex flex-wrap justify-center items-center  border-yellow-600">
-                <div class="left h-screen sm:h-2/3 lg:h-full lg:w-1/2 w-full flex flex-col text-white lg:justify-between   border-blue-600">
+                <div class="left h-screen sm:h-2/3 lg:h-full lg:w-1/2 w-full flex flex-col text-white lg:justify-between border-blue-600">
                     <div class="w-full mt-16 sm:mt-40 mb-20">
                         <h1 class="text-6xl m-1">系統總覽</h1>
                         <p class="text-2xl m-1">
                             {{ msg }}
                         </p>
                         <button type="button" class="px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-scale-animation-modal" data-hs-overlay="#hs-scale-animation-modal"
-                        v-if="errorModal">
+                        v-if="errorModal" id="error-btn">
             顯示更多資訊>
         </button>
                     </div>
@@ -73,21 +73,132 @@
                     </div>
                 </div>
     
-                <div class="right h-screen lg:h-full lg:w-1/2 w-full flex items-center text-slate-300   ">
-                    <div class="w-full h-2/3 bg-slate-600 rounded-xl bg-opacity-50 p-4">
-                        <div class="w-full h-1/6 text-md m-4">
-                            <h2 class="text-4xl">最新紀錄</h2>
-                            <p>共 {{ events }} 筆資料, 最後更新於: {{ last_update }}</p>
-                        </div>
-                        
-                        <div class="w-full h-5/6">
-                            <div class="w-full h-5/6 overflow-y-auto">
-                                <div v-for="item in res" :key="item.timestamp" class="w-full h-1/6 p-2 flex flex-row justify-between items-center bg-opacity-25 border-b-2 border-slate-500 rounded-md duration-150 hover:text-white hover:translate-x-2" :class="item.color">
-                                    <div class="w-1/6">{{ item.timestamp }}</div>
-                                    <div class="w-1/6">{{ item.cameraId }}</div>
-                                    <div class="w-1/3">{{ item.violationType }}</div>
-                                    <div class="w-1/6">{{ item.level }}</div>
-                                    <nuxt-img v-bind:src="'data:image/jpeg;base64,'+item.photo" />
+                <div class="right h-screen lg:w-1/2 w-full flex items-center text-slate-300 border-red-300  ">
+                    <div class="w-full h-2/3 bg-slate-700 rounded-xl bg-opacity-50 p-4">
+                        <div class="w-full h-full flex flex-col justify-center items-center border-blue-300">
+                            <h2 class="text-4xl m-4">最新紀錄</h2>
+            
+                            <div class="w-full h-5/6 mt-4 overflow-y-scroll flex flex-col items-center ">
+                                
+                                <div class="w-full">
+                                <!-- Item -->
+                                <div class="flex gap-x-3 hover:animate-pulse hover:text-white" @click="refresh()">
+                                    <!-- Left Content -->
+                                    <div class="w-16 text-end"/>
+                                        
+                                    <!-- End Left Content -->
+                                    <!-- Icon -->
+                                    <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200">
+                                        <div class="relative z-10 size-7 flex justify-center items-center">
+                                            <div class="size-2 rounded-full bg-blue-400"></div>
+                                            </div>
+                                        </div>
+                                        <!-- End Icon -->
+
+                                        <!-- Right Content -->
+                                    <div class="grow pt-0.5 pb-8">
+                                        <h3 class="flex gap-x-1.5 font-semibold text-slate-400">
+                                            上次更新：{{ last_update }}
+                                        </h3>
+                                        <p class="mt-1 text-sm text-slate-400">
+                                            {{ lu_text }}
+                                        </p>
+                                    </div>
+                                    <!-- End Right Content -->
+                                </div>
+                            <!-- End Item -->
+                            <div class="flex gap-x-3 animate-pulse rounded-lg" v-if="loading">
+                                <!-- Left Content -->
+                                    <div class="w-16 text-end"/>
+                                        
+                                    <!-- End Left Content -->
+                                    <!-- Icon -->
+                                    <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px]">
+                                        <div class="relative z-10 size-7 flex justify-center items-center">
+                                            <div class="size-2 rounded-full bg-blue-400 animate-ping"></div>
+                                            </div>
+                                        </div>
+                                        <!-- End Icon -->
+
+                                        <!-- Right Content -->
+                                    <div class="grow pt-0.5 pb-8">
+                                        <h3 class="flex gap-x-1.5 font-semibold text-slate-400">
+                                            更新中...
+                                        </h3>
+                                    </div>
+                                    <!-- End Right Content -->
+
+                            </div>
+                                <div class="flex gap-x-3 rounded-lg" v-if="nodata">
+                                    <!-- Left Content -->
+                                    <div class="w-16 text-end"/>
+                                        
+                                    <!-- End Left Content -->
+                                    <!-- Icon -->
+                                    <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px]">
+                                        <div class="relative z-10 size-7 flex justify-center items-center">
+                                            <div class="size-2 rounded-full bg-slate-500"></div>
+                                            </div>
+                                        </div>
+                                        <!-- End Icon -->
+
+                                        <!-- Right Content -->
+                                    <div class="grow pt-0.5 pb-8">
+                                        <h3 class="flex gap-x-1.5 font-semibold text-slate-400">
+                                            目前沒有新事件
+                                        </h3>
+                                    </div>
+                                    <!-- End Right Content -->
+                                    </div>
+                            </div>
+                                <div v-for="item in res" :key="item.timestamp" class="w-full ">
+                                    <!-- Item -->
+                                <div class="flex gap-x-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg">
+                                    <!-- Left Content -->
+                                    <div class="w-16 text-end">
+                                        <span class="text-xs text-slate-400">{{ new Date(item.timestamp).toLocaleTimeString('zh-TW') }}</span>
+                                    </div>
+                                    <!-- End Left Content -->
+                                    <!-- Icon -->
+                                    <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200">
+                                        <div class="relative z-10 size-7 flex justify-center items-center">
+                                            <div class="size-2 rounded-full" :class="item.color"></div>
+                                            </div>
+                                        </div>
+                                        <!-- End Icon -->
+
+                                        <!-- Right Content -->
+                                    <div class="grow pt-0.5 pb-8">
+                                        <h3 class="flex gap-x-1.5 font-semibold text-white text-xl">
+                                            <!--critical icon-->
+                                            <div v-if="item.level == 4">
+                                                <svg class="h-8 w-8 text-red-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2" />  
+                                                    <line x1="15" y1="9" x2="9" y2="15" /> 
+                                                    <line x1="9" y1="9" x2="15" y2="15"/>
+                                                </svg>
+                                            </div>
+
+                                            <!--warning icon-->
+                                            <div v-if="item.level == 2">
+                                                <svg class="h-8 w-8 text-yellow-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                                </svg>
+                                            </div>
+
+                                            <!--info icon-->
+                                            <div v-if="item.level == 1">
+                                                <svg class="h-8 w-8 text-slate-200"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round" >  <circle cx="12" cy="12" r="10" />  <line x1="12" y1="16" x2="12" y2="12" />  <line x1="12" y1="8" x2="12.01" y2="8" /></svg>
+                                            </div>
+                                            #{{ (item._id).slice(-6) }}-{{ item.violationType }}
+                                        </h3>
+                                        <p class="mt-1 text-sm text-white flex items-center">
+                                            <svg class="h-6 w-6 m-1 text-gray-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />  <circle cx="12" cy="10" r="3" /></svg>
+                                            {{ item.cameraId }}
+                                        </p>
+                                    </div>
+                                    <!-- End Right Content -->
+                                </div>
+                            <!-- End Item -->
                                 </div>
                             </div>
                         </div>
@@ -107,16 +218,17 @@
     const config = useRuntimeConfig()
     const api_url = config.public.backend_url+'violation-statistics'
 
-    //get today set to 2024-08-01 00:00:00
-    const today = new Date('2024-08-01')
-    today.setHours(0,0,0,0)
+    //get today 0~now
+    //const today = new Date('2024-08-26')
+    const today = new Date()
+    today.setHours(8,0,0,0)
     const tomorrow = new Date()
+    tomorrow.setHours(8,0,0,0)
     tomorrow.setDate(tomorrow.getDate()+1)
-    tomorrow.setHours(0,0,0,0)
 
     const reqUrl = api_url + '?startTime=' + today.toISOString() + '&endTime=' + tomorrow.toISOString()
 
-    const msg = ref('')
+    const msg = ref('連線中...')
     const events = ref(0)
     const criticals = ref(0)
     const warns = ref(0)
@@ -126,11 +238,13 @@
     const criticals_num = ref('0')
     const warns_num = ref('0')
     const events_num = ref('0')
-    const last_update = ref('')
+    const last_update = ref('更新中...')
+    const lu_text = ref('請稍後...')
     
     // request objects
     const res = ref([])
     const loading = ref(true)
+    const nodata = ref(false)
     
     // request function
     async function fetchData(){
@@ -140,6 +254,8 @@
         events.value = 0
         criticals.value = 0
         warns.value = 0
+        last_update.value = '更新中...'
+        lu_text.value = '請稍後...'
 
         // send request, when failed, dump console message to modal
         try{
@@ -155,14 +271,30 @@
                     console.log(res)
                     errorModalTitle.value = "HTTP Error: " + res.status+" 請求失敗"
                     errorModalMsg.value = "Error message: " + res.statusText
-                    throw new Error(res)
+                    throw new Error()
                 }
                 return res
             })
+            last_update.value = new Date().toLocaleString('zh-TW')
+            lu_text.value = '資料整理中...'
+
             const data = await response.json()
             res.value = data.violations
+            //sort by timestamp
+            if(res.value.length>0)
+                res.value.sort((a, b) => (a.timestamp < b.timestamp) ? 1 : -1)
+            else{
+                loading.value = false
+                nodata.value = true
+                lu_text.value = '更新完畢'
+                msg.value = '今日到目前為止沒有新的違規紀錄！'
+                return
+            }
+
         }catch(e){
-            msg.value = 'ㄜ...請確認後端伺服器運作正常！, 點更多可查看錯誤訊息'
+            //select error-btn
+            document.getElementById('error-btn').click()
+            msg.value = '請確認後端伺服器運作正常！, 點更多可查看錯誤訊息'
             criticals_num.value = ':('
             warns_num.value = ':('
             events_num.value = ':('
@@ -172,18 +304,27 @@
         }
         
         for(let i=0; i<res.value.length; i++){
-            if(res.value[i].ruleId >= 200){
-                res.value[i].color = 'bg-red-500'
-                criticals.value++
-            }else if(res.value[i].ruleId >= 100){
-                res.value[i].color = 'bg-yellow-500'
+            if(res.value[i].ruleId == 404){
+                res.value[i].color = 'border-yellow-500 bg-yellow-500'
                 warns.value++
+                res.value[i].level = 2
+            }else if(res.value[i].ruleId >= 200){
+                res.value[i].color = 'border-red-500 bg-red-500'
+                criticals.value++
+                res.value[i].level = 4
+            }else if(res.value[i].ruleId >= 100){
+                res.value[i].color = 'border-yellow-500 bg-yellow-500'
+                warns.value++
+                res.value[i].level = 2
             }else{
                 res.value[i].color = 'bg-gray-500'
+                res.value[i].level = 1
             }
         }
 
         events.value = res.value.length
+        lu_text.value = '共有 ' + events.value + ' 筆資料, 點我可以再次更新'
+
         // set message
         events_num.value = res.value.length
 
@@ -206,16 +347,14 @@
             }
             msg.value += '請查看!'
         }else if(criticals.value==0 && warns.value==0){
-            msg.value = '目前沒有新的違規紀錄！'
+            msg.value = '今日到目前為止沒有新的違規紀錄！'
         }else{
             msg.value = '錯誤！'
             criticals_num.value = 'Error'
             warns_num.value = 'Error'
             events_num.value = 'Error'
         }
-    
         loading.value = false
-        last_update.value = new Date().toLocaleString()
     }
     
 
@@ -225,19 +364,36 @@
             behavior: 'smooth'
         })
     }
-    
-    //await fetchData()
+    async function refresh(){
+        loading.value = true
+        nodata.value = false
+        await fetchData()
+    }
 
     //fetch when onMounted
-    
-
     onMounted(async () => {
-        //console.log('updated log')
+        // reset value
         criticals_num.value = '0'
         warns_num.value = '0'
         events_num.value = '0'
-        // update last update time
+        
         await fetchData()
     })
 
 </script>
+
+<style scoped>
+.loader {
+    border: 0.5rem solid #f3f3f3; /* Light grey */
+    border-top: 0.5rem solid #555; /* Blue */
+    border-radius: 100%;
+    width: 4rem;
+    height: 4rem;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
