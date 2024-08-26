@@ -12,5 +12,6 @@ export default defineNuxtConfig({
     public:{
       backend_url: process.env.BACKEND_URL || 'http://localhost:3000'
     }
-  }
+  },
+  plugins: ["~/plugins/preline.client.ts"],
 })

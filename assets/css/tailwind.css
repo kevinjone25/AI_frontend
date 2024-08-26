@@ -5,3 +5,7 @@
 body{
     background-color: #000000;
 }
+
+.hs-select{
+    width: 70%;
+}
