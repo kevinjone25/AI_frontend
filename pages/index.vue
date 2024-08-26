@@ -286,7 +286,7 @@
             else{
                 loading.value = false
                 nodata.value = true
-                lu_text.value = '更新完畢'
+                lu_text.value = '更新完畢, 點我再次更新'
                 msg.value = '今日到目前為止沒有新的違規紀錄！'
                 return
             }
