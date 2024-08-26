@@ -12,7 +12,9 @@
   "dependencies": {
     "@nuxt/image": "latest",
     "@popperjs/core": "^2.11.8",
-    "@vuepic/vue-datepicker": "^9.0.2",
+    "@vuepic/vue-datepicker": "latest",
+    "@vueuse/core": "^11.0.3",
+    "@vueuse/nuxt": "^11.0.3",
     "nuxt": "^3.12.4",
     "preline": "^2.4.1",
     "vite": "latest",
