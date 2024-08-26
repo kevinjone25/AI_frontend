@@ -10,9 +10,6 @@
             <div class="col">
                 <nuxt-link to="/statistics" class="">報表</nuxt-link>
             </div>
-            <div class="col">
-                <nuxt-link to="/report" class="">歷史報告</nuxt-link>
-            </div>
         </div>
     </div>
 </template>

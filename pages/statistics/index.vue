@@ -5,32 +5,17 @@
                 <h1 class="text-white text-4xl row font-semibold">
                     產生過去七天的報表
                 </h1>
-                <form class="mt-10"
-                    action=""
-                    method="" @click="redirect">
-                    <a href="/pending" class="bg-blue-500 py-4 px-7 rounded-lg text-2xl text-gray-200">
+                <form class="mt-10"  @submit.prevent="submitForm">
+                    <button type="submit" class="bg-blue-500 py-4 px-7 rounded-lg text-2xl text-gray-200">
                         Generate
-                    </a>
+                    </button>
                 </form>
             </div>
             <div class="col w-1/2 h-full max-sm:hidden">
                 <NuxtImg class="h-full w-full opacity-50" src="/server.jpg" alt="server" />
             </div>
         </div>
-        <!-- <div class="flex justify-center items-center h-full" v-show="!state">
-            <div class="dots col">
-                <div class="font-bold col text-4xl">分</div>
-                <div class="font-bold col text-4xl">析</div>
-                <div class="font-bold col text-4xl">報</div>
-                <div class="font-bold col text-4xl">表</div>
-                <div class="font-bold col text-4xl">生</div>
-                <div class="font-bold col text-4xl">成</div>
-                <div class="font-bold col text-4xl">中</div>
-                <div class="font-bold col text-4xl">.</div>
-                <div class="font-bold col text-4xl">.</div>
-                <div class="font-bold col text-4xl">.</div>
-            </div>
-        </div> -->
+
     </div>
 </template>
 
@@ -38,20 +23,28 @@
 import('~/assets/css/loading.css')
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+
+const config = useRuntimeConfig()
+const api_url = config.public.backend_url + 'generate-violation-report';
+// const api_url = 'https://frontend.free.beeceptor.com';
 const router = useRouter();
 const list = ref(router.currentRoute.value.query.list);
 if (!router.currentRoute.value.query.list) {
     list.value = "all";
 }
 
-// const state  = await $fetch(url, {
-//     method: "POST",
-//     headers: {
-//         "Content-Type": "application/json",
-//     },
-// }).then((res) => {
-//     if (res.status === "pending") {
-//         state.value = false;
-//     }
-// });
+
+
+function submitForm() {
+    fetch(api_url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then((res) => {
+        console.log(res);
+        navigateTo('/pending');
+    });
+}
+
 </script>
