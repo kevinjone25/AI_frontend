@@ -30,6 +30,44 @@
   </div>
 </div>
 
+<button type="button" id="modal-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-basic-modal" data-hs-overlay="#hs-basic-modal"/>
+
+
+<div id="hs-basic-modal" class="hs-overlay hs-overlay-open:opacity-100 hs-overlay-open:duration-500 hidden size-full fixed top-0 start-0 z-[80] opacity-0 overflow-x-hidden transition-all overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="hs-basic-modal-label">
+  <div class="w-[90vw] lg:w-[60vw] m-3 sm:mx-auto">
+    <div class="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto">
+      <div class="flex justify-between items-center py-3 px-4 border-b">
+        <h3 id="hs-basic-modal-label" class="font-bold text-gray-800">
+          #{{ shown_event_id }}-{{ shown_event_type }} 
+        </h3>
+        <button type="button" class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none" aria-label="Close" data-hs-overlay="#hs-basic-modal">
+          <span class="sr-only">Close</span>
+          <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="p-4 overflow-y-auto">
+        <nuxt-img class="w-full max-w-[40vw] m-2" v-bind:src="'data:image/jpeg;base64,'+shown_event_photo" v-if="shown_event_photo!='NA'" />
+        <nuxt-img class="w-full max-w-[40vw] m-2"  src="mqtt.jpg" v-else/>
+        <p class="mt-1 text-gray-800">
+          時間：{{ shown_event_time }}
+        </p>
+        <p class="mt-1 text-gray-800">
+          相機：{{ shown_event_camera }}
+          </p>
+      </div>
+      <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t">
+        <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" data-hs-overlay="#hs-basic-modal">
+          Close
+        </button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
         <client-only>
             <main class="w-full flex flex-wrap justify-center items-center  border-yellow-600">
                 <div class="left h-screen sm:h-2/3 lg:h-full lg:w-1/2 w-full flex flex-col text-white lg:justify-between border-blue-600">
@@ -151,7 +189,7 @@
                                     <!-- End Right Content -->
                                     </div>
                             </div>
-                                <div v-for="item in res" :key="item.timestamp" class="w-full ">
+                                <div v-for="item in res" :key="item.timestamp" class="w-full" @click="showDetail(item)">
                                     <!-- Item -->
                                 <div class="flex gap-x-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg">
                                     <!-- Left Content -->
@@ -210,6 +248,13 @@
 </template>
 
 <script setup>
+    import { set } from '@vueuse/core';
+
+    const shown_event_id = ref('')
+    const shown_event_photo = ref('')
+    const shown_event_time = ref('')
+    const shown_event_camera = ref('')
+    const shown_event_type = ref('')
 
     const errorModal = ref(false)
     const errorModalTitle = ref('Error')
@@ -219,8 +264,8 @@
     const api_url = config.public.backend_url+'violation-statistics'
 
     //get today 0~now
-    //const today = new Date('2024-08-26')
-    const today = new Date()
+    const today = new Date('2024-08-26')
+    //const today = new Date()
     today.setHours(8,0,0,0)
     const tomorrow = new Date()
     tomorrow.setHours(8,0,0,0)
@@ -370,6 +415,30 @@
         await fetchData()
     }
 
+    function showDetail(item){
+        //select offcanvas button
+        const offcanvas = document.getElementById('modal-btn')
+        if(offcanvas === null){
+            console.log('offcanvas button not found')
+            return
+        }
+
+        //set offcanvas data
+        //get last 6 characters of the id
+        shown_event_id.value = (item._id).slice(-6)
+        
+        shown_event_photo.value = item.photo
+        
+        //transform date format to local
+        shown_event_time.value = new Date(item.timestamp).toLocaleString()
+        shown_event_camera.value = item.cameraId
+        shown_event_type.value = item.violationType
+
+
+        offcanvas.click()
+        console.log(item)
+    }
+
     //fetch when onMounted
     onMounted(async () => {
         // reset value
@@ -378,6 +447,12 @@
         events_num.value = '0'
         
         await fetchData()
+
+        //set interval to fetch data every 5 minutes
+        setInterval(async () => {
+            await fetchData()
+        }, 300000)
+
     })
 
 </script>
