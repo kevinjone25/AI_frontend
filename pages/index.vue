@@ -264,8 +264,8 @@
     const api_url = config.public.backend_url+'violation-statistics'
 
     //get today 0~now
-    const today = new Date('2024-08-26')
-    //const today = new Date()
+    //const today = new Date('2024-08-26')
+    const today = new Date()
     today.setHours(8,0,0,0)
     const tomorrow = new Date()
     tomorrow.setHours(8,0,0,0)
