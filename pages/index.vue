@@ -451,7 +451,7 @@
         //set interval to fetch data every 5 minutes
         setInterval(async () => {
             await fetchData()
-        }, 300000)
+        }, 60000)
 
     })
 
