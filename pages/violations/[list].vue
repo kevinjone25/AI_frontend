@@ -53,7 +53,7 @@
                             <Datepicker v-model="EndDate" class="rounded-lg" required />
                         </div>
                     
-                    <button @click="getEvents()" class="w-16 bg-[#005cb2] hover:bg-blue-600 m-4 p-2 rounded-md self-end">
+                    <button @click="getEvents(false)" class="w-16 bg-[#005cb2] hover:bg-blue-600 m-4 p-2 rounded-md self-end">
                         查詢
                     </button>
                 </div>
@@ -101,7 +101,7 @@
                             <Datepicker v-model="EndDate" class="rounded-lg" required />
                         </div>
                     
-                    <button @click="getEvents()" class="w-16 bg-[#005cb2] hover:bg-blue-600 m-4 p-2 rounded-md self-end">
+                    <button @click="getEvents(true)" class="w-16 bg-[#005cb2] hover:bg-blue-600 m-4 p-2 rounded-md self-end">
                         查詢
                     </button>
                 </div>
@@ -110,7 +110,7 @@
             </div>
         </div>
 
-        <main class="sticky top-10 z-10 text-white h-auto w-full -mt-32 flex justify-center items-center duration-75">
+        <main class="sticky top-10 z-10 text-white h-auto w-full flex justify-center items-center duration-75">
                 <div class="loader" v-if="loading"></div>
                 <ClientOnly>
                     <div class="w-full overflow-y-auto bg-black border-2 p-4 rounded-xl" v-if="!loading">
@@ -326,7 +326,8 @@
     }
 
     //apply filter and refetch data
-    async function getEvents(){
+    async function getEvents(mode){
+        if(mode)
         document.getElementById('selector-offcanvas-btn').click()
         // for filter
         // get selected value
